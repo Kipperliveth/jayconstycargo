@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&family=Libre+Baskerville:ital,wght@0,400..700;1,400..700&display=swap');
+@import url("./pages-styles/About.scss");
+@import url("./pages-styles/Contact.scss");
+@import url("./pages-styles/FAQs.scss");
+@import url("./pages-styles/Home.scss");
+@import url("./pages-styles/Legal.scss");
+@import url("./pages-styles/Pricing.scss");
+@import url("./pages-styles/Services.scss");
+@import url("./pages-styles/Tracking.scss");
+@import url("./pages-styles/NotFound.scss");
+@import url("./pages-styles/Contact-Main.scss");
+
+@import url("./components-styles/Footer.scss");
+@import url("./components-styles/Navbar.scss");
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "League Spartan", sans-serif;
+    //   font-family: "Libre Baskerville", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}

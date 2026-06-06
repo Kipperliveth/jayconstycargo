@@ -1,0 +1,1323 @@
+// Brand Color Variables
+$primary-dark: #0043ae;   // Deep Logistics Navy
+$primary-blue: #207ec8;   // Vibrant Tech Blue
+$accent-green: #aee376;   // Vibrant Lime Green
+$bg-clean: #fcfefd;       // Off-White Clean Background
+$text-dark: #0a2540;      // Very dark slate
+$text-light: #425466;     // Medium slate for subtitles
+$white: #ffffff;
+
+.home {
+  background-color: $bg-clean;
+  // Accounts for your fixed navbar (adjust 80px if your navbar is taller/shorter)
+  padding-top: 40px; 
+}
+
+.hero {
+  // NEW: Forces the section to fit exactly within the screen height without scrolling
+  min-height: calc(100vh - 80px);
+  max-height: 900px; // Safety cap for massive monitors
+  display: flex;
+  align-items: center; // Centers everything vertically within the screen
+  padding: 2rem 5%;
+  overflow: hidden; 
+
+  &__container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr; 
+    gap: 3rem; // Tighter gap
+    align-items: center;
+  }
+
+  // --- Left Content ---
+  &__content {
+    max-width: 600px;
+  }
+
+  &__title {
+    font-size: 3.5rem; // Scaled down so it doesn't hog the whole screen
+    font-weight: 800;
+    line-height: 1.1;
+    color: $text-dark;
+    margin-bottom: 1.2rem; // Tighter margin
+    letter-spacing: -1.5px; 
+  }
+
+  &__subtitle {
+    font-size: 1.15rem; // Scaled down slightly
+    line-height: 1.6;
+    color: $text-light;
+    margin-bottom: 2rem; // Tighter margin
+    max-width: 95%;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem; // Tighter margin
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-radius: 6px;
+
+      &--primary {
+        background-color: $primary-blue; 
+        color: $white;
+        padding: 1rem 2rem; // Slightly thinner button
+        
+        &:hover {
+          background-color: $primary-dark;
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba($primary-dark, 0.2);
+        }
+      }
+
+      &--text {
+        color: $primary-blue;
+        padding: 0.5rem 0;
+        
+        &:hover {
+          color: $primary-dark;
+          gap: 0.8rem; 
+        }
+      }
+    }
+  }
+
+  &__trust {
+    border-top: 1px solid rgba($text-dark, 0.1);
+    padding-top: 1.2rem;
+    p {
+      font-size: 0.9rem;
+      color: $text-light;
+      font-weight: 500;
+      margin: 0;
+    }
+  }
+
+  // --- Right Visuals ---
+  &__visuals {
+    position: relative;
+    height: 450px; // Scaled down from 600px so it fits on standard laptops
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__graphic {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba($primary-blue, 0.15) 2px, transparent 2px);
+    background-size: 30px 30px; // Slightly tighter dots
+    border-radius: 50%; 
+    opacity: 0.9;
+
+    // Floating UI Cards
+    .float-card {
+      position: absolute;
+      width: 60px; // Scaled down from 70px
+      height: 60px;
+      background: $white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+      color: $primary-blue;
+      animation: float 6s ease-in-out infinite; 
+
+      &--1 {
+        top: 15%;
+        left: 5%;
+        animation-delay: 0s;
+      }
+
+      &--2 {
+        top: 45%;
+        right: 0%;
+        animation-delay: 2s; 
+        background-color: $primary-dark;
+        color: $white;
+        width: 45px;
+        height: 45px;
+      }
+
+      &--3 {
+        bottom: 15%;
+        left: 35%;
+        animation-delay: 4s;
+        color: $accent-green;
+      }
+    }
+  }
+}
+
+// Keyframes for the floating animation
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); } // Reduced float distance so it doesn't clip
+  100% { transform: translateY(0px); }
+}
+
+// --- Responsive Breakpoints ---
+@media (max-width: 992px) {
+  .hero {
+    min-height: auto; // Remove the locked height on tablets so content can flow naturally
+    padding: 4rem 5%;
+
+    &__container {
+      grid-template-columns: 1fr; 
+      text-align: center;
+    }
+
+    &__content {
+      margin: 0 auto;
+    }
+
+    &__subtitle {
+      margin: 0 auto 2rem;
+    }
+
+    &__actions {
+      justify-content: center;
+    }
+
+    &__visuals {
+      height: 350px;
+      margin-top: 1rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+
+    .home{
+        padding-top: 80px;
+    }
+
+  .hero {
+    padding: 2rem 5% 3rem;
+
+    &__title {
+      font-size: 2.5rem; // Even smaller for mobile phones
+      letter-spacing: -1px;
+    }
+
+    &__actions {
+      flex-direction: column;
+      gap: 1rem;
+
+      .btn--primary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+    
+    &__visuals {
+      display: none; 
+    }
+  }
+}
+
+
+// --- SERVICES GALLERY SECTION (EDGE TO EDGE & DYNAMIC) ---
+.services-gallery {
+  // Top & Bottom = 6rem, Left & Right = 0 (Keeps it edge-to-edge horizontally)
+  padding: 6rem 0; 
+  background-color: $bg-clean; 
+  overflow: hidden;
+}
+
+.gallery-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 4rem;
+  padding: 0 5%; // Keep the text from touching the edges of the screen
+
+  h2 {
+    font-size: 2.8rem;
+    color: $text-dark;
+    margin-bottom: 1.2rem;
+    letter-spacing: -1.5px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $text-light;
+    line-height: 1.6;
+  }
+}
+
+// --- GALLERY GRID ---
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); // 4 equal columns
+  width: 100%;
+  gap: 0; // Explicitly force no gaps
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+// --- INDIVIDUAL DYNAMIC CARD ---
+.gallery-card {
+  position: relative;
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  // border-right: 1px solid rgba(255, 255, 255, 0.2); // Seamless look without border
+  transition: all 0.4s ease;
+
+  &:last-child {
+    border-right: none; // Remove line on the very last card
+  }
+
+  // 1. Dark Gradient (Always visible, ensures white text is readable on light images)
+  &__gradient-overlay {
+    position: absolute;
+    inset: -5px; // FIX: Stretches the overlay 2px past the container to kill sub-pixel gaps
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.85) 100%);
+    z-index: 1;
+    transition: opacity 0.4s ease;
+  }
+
+  // 2. Frosted Glass Overlay (Hidden by default, reveals on hover)
+  &__frost-overlay {
+    position: absolute;
+    inset: -5px; // FIX: Stretches the frost to prevent blur-edge bleeding
+    background-color: rgba(255, 255, 255, 0.15); // Light tint
+    backdrop-filter: blur(15px); // The actual frost effect
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  &__number {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #f77f00; // Orange number
+    z-index: 3;
+    transition: transform 0.4s ease;
+  }
+
+  // Content Wrapper 
+  &__content {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 3.5rem; // FIX: Acts as a bumper to keep text above the absolute button
+    transition: all 0.4s ease;
+  }
+
+  &__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $white;
+    margin-bottom: 0.5rem;
+    transition: color 0.4s ease;
+    line-height: 1.55;
+  }
+
+  &__desc {
+    font-size: 0.95rem;
+    color: $white;
+    line-height: 1.5;
+    margin: 0;
+    max-height: 0; // Collapsed
+    opacity: 0; // Hidden
+    transform: translateY(10px);
+    transition: all 0.4s ease;
+  }
+
+  &__btn {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 2.5rem; // Moved to align left under the text
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.2); // Subtle default button
+    color: $white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
+  }
+
+  // --- THE HOVER ANIMATION LOGIC ---
+  &:hover {
+    .gallery-card__gradient-overlay {
+      opacity: 0.5; // Dim the dark gradient so frost pops more
+    }
+    .gallery-card__frost-overlay {
+      opacity: 1; // Reveal frosted glass
+    }
+    
+    // Flexbox handles the upward push natively now when description expands
+    .gallery-card__title {
+      line-height: 1.5;
+    //   color: #111; // Dark text on frost
+    }
+    .gallery-card__desc {
+      max-height: 150px; // Expand height
+      opacity: 1; // Fade in text
+      transform: translateY(0);
+      margin-top: 0.5rem;
+    //   color: #222; // Dark text on frost
+    }
+    .gallery-card__btn {
+      background-color: #f77f00; // Button turns orange
+      color: $white;
+      transform: scale(1.1); // Slight pop
+    }
+    .gallery-card__number {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// --- MOBILE RESPONSIVENESS (STACKED) ---
+@media (max-width: 991px) {
+  .services-gallery {
+    padding: 3rem 0 0;
+  }
+
+  .gallery-header {
+    margin-bottom: 2rem;
+    h2 { font-size: 2.2rem; }
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr; // Stack cards vertically
+    border-top: none;
+  }
+
+  .gallery-card {
+    height: 350px; // Shorter on mobile
+    border-right: none;
+    border-bottom: none;
+
+    // FIX: ADD RGBA TINT ON MOBILE
+    &__gradient-overlay {
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%); // Constant 0.4 tint, getting darker towards bottom
+      opacity: 1; // Always visible
+    }
+
+    // On mobile devices (no mouse), we force the text to always be visible
+    &__content {
+      // transform: translateY(-40px); // Removed forced transform to match desktop structural padding fix
+    }
+    &__desc {
+      max-height: 150px;
+      opacity: 1;
+      transform: translateY(0);
+      margin-top: 0.5rem;
+    }
+    &__btn {
+      background-color: #f77f00; // Always orange on mobile
+    }
+    
+    // Disable hover effects completely on touch devices to avoid sticky states
+    &:hover {
+      .gallery-card__frost-overlay { opacity: 0; }
+      .gallery-card__title { color: $white; }
+      .gallery-card__desc { color: $white; }
+      // .gallery-card__gradient-overlay { opacity: 1; } // Don't reset this on hover on mobile
+    }
+  }
+}
+
+.why-choose-us {
+  padding: 7rem 0;
+  background-color: #f8fafc;
+  // Creates the premium subtle blueprint grid line system seen in your reference image
+  background-image: 
+    linear-gradient(rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px; 
+  background-position: center;
+
+  &__container {
+    width: 90%;
+    max-width: 1000px; // Slightly narrower container keeping cards compactly focused
+    margin: 0 auto;
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: 5rem;
+
+    h2 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+      letter-spacing: -2px;
+    }
+
+    p {
+      font-size: 1.15rem;
+      color: $text-light;
+      font-weight: 400;
+    }
+  }
+
+  &__stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; // Clean uniform spacing between long rows
+  }
+}
+
+// --- DYNAMIC PROGRESSIVE CARD ROW ---
+.why-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr; // Exact split ratio matching your reference image
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.09);
+  }
+
+  &__content {
+    padding: 3.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  &__title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    letter-spacing: -1px;
+  }
+
+  &__desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.8rem 1.6rem;
+    border-radius: 50px;
+    transition: all 0.25s ease;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      gap: 0.8rem;
+      svg { transform: translateX(3px); }
+    }
+  }
+
+  &__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  // --- PROGRESSIVE INDIE CARD STYLING ---
+  // Matched exactly to your source attachment's color weight shifts
+  
+  &--dark-navy {
+    background-color: #1e293b; // Deep dark slate
+    
+    .why-row__title { color: $white; }
+    .why-row__desc { color: #cbd5e1; }
+    .why-row__btn {
+      background-color: rgba($white, 0.08);
+      color: $white;
+      border: 1px solid rgba($white, 0.15);
+      &:hover { background-color: $white; color: #1e293b; }
+    }
+  }
+
+  &--medium-slate {
+    background-color: #334155; // Slightly lighter corporate grey-blue
+    
+    .why-row__title { color: $white; }
+    .why-row__desc { color: #cbd5e1; }
+    .why-row__btn {
+      background-color: rgba($white, 0.08);
+      color: $white;
+      border: 1px solid rgba($white, 0.15);
+      &:hover { background-color: $white; color: #334155; }
+    }
+  }
+
+  &--steel-blue {
+    background-color: #475569; // Steel mid-tone
+    
+    .why-row__title { color: $white; }
+    .why-row__desc { color: #e2e8f0; }
+    .why-row__btn {
+      background-color: rgba($white, 0.08);
+      color: $white;
+      border: 1px solid rgba($white, 0.15);
+      &:hover { background-color: $white; color: #475569; }
+    }
+  }
+
+  &--light-grey {
+    background-color: #f1f5f9; // Crisp modern light grey frame
+    border: 1px solid rgba(15, 23, 42, 0.05);
+
+    .why-row__title { color: #0f172a; }
+    .why-row__desc { color: #475569; }
+    .why-row__btn {
+      background-color: #0f172a;
+      color: $white;
+      &:hover { background-color: $primary-blue; }
+    }
+  }
+}
+
+// --- RESPONSIVE ADAPTATIONS ---
+@media (max-width: 991px) {
+  .why-choose-us {
+    padding: 5rem 0;
+    &__header {
+      h2 { font-size: 2.6rem; }
+    }
+  }
+
+  .why-row {
+    grid-template-columns: 1fr; // Stack text and image cleanly on small devices
+    
+    &__content {
+      padding: 3rem 2.5rem;
+    }
+    
+    &__image-wrapper {
+      height: 240px;
+      order: 2; // Keeps text consistently on top when collapsing layout
+    }
+  }
+}
+
+// ==========================================
+// --- STICKY DARK SLATE FAQ SECTION ---
+// ==========================================
+.faq-section {
+  padding: 8rem 0;
+  background-color: #0f172a; 
+  color: #ffffff;
+  overflow: visible !important;
+
+  &__container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr; 
+    gap: 5rem;
+    
+    // FIX 1: Uncommented this! It stops the left column from stretching to full height.
+    align-items: start !important; 
+    overflow: visible !important; 
+  }
+
+  // --- Left Side (Sticky Frame Configuration) ---
+  &__left {
+    position: -webkit-sticky; 
+    position: sticky;
+    top: 100px; 
+    height: max-content; 
+    display: block;
+    z-index: 10;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(#207ec8, 0.2);
+    color: #93c5fd; 
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+
+  &__title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1.5px;
+
+    span {
+      color: #94a3b8; 
+    }
+  }
+
+  &__intro {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin-bottom: 3rem;
+    max-width: 90%;
+  }
+
+  // "Still Have Questions?" Box Frame
+  .faq-cta-card {
+    background-color: #1e293b; 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2.5rem;
+    
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #94a3b8;
+      margin-bottom: 1.5rem;
+    }
+
+    &__subtext {
+      font-size: 0.9rem !important;
+      color: #64748b !important;
+      margin-bottom: 2rem !important;
+    }
+
+    .btn--neon {
+      display: inline-flex;
+      background-color: #aee376; 
+      color: #0f172a; 
+      font-weight: 700;
+      padding: 1rem 2.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(174, 227, 118, 0.25);
+        background-color: lighten(#aee376, 5%);
+      }
+    }
+  }
+
+  // --- Right Side Accordions ---
+  &__right {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+  }
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__item {
+    background-color: #1e293b; 
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      background-color: lighten(#1e293b, 2%);
+    }
+
+    &--active {
+      background-color: #334155; 
+      border-color: rgba(255, 255, 255, 0.15);
+
+      .accordion__icon {
+        background-color: #aee376;
+        color: #0f172a;
+      }
+
+      // FIX 2: Added this block back in! It tells the dropdown to open.
+      .accordion__body-wrapper {
+        grid-template-rows: 1fr; 
+      }
+    }
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.8rem 2rem;
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0;
+      color: #ffffff;
+      line-height: 1.5;
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  &__body-wrapper {
+    display: grid;
+    grid-template-rows: 0fr; // Collapsed by default
+    transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &__body {
+    overflow: hidden; 
+    
+    p {
+      padding: 0 2rem 1.8rem 2rem;
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+  }
+}
+
+// --- RESPONSIVE MIXES ---
+@media (max-width: 1024px) {
+  .faq-section {
+    padding: 6rem 0;
+
+    &__container {
+      grid-template-columns: 1fr; 
+      gap: 3rem;
+    }
+
+    &__left {
+      position: relative; // Disables sticky on mobile/tablet so it flows normally
+      top: 0;
+    }
+
+    &__title {
+      font-size: 3rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .faq-section {
+    padding: 5rem 0;
+
+    &__title {
+      font-size: 2.5rem;
+    }
+
+    .accordion__header {
+      padding: 1.5rem;
+      h3 { font-size: 1.1rem; }
+    }
+
+    .accordion__body p {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+    }
+  }
+}
+
+/* =========================================
+   STICKY TESTIMONIALS SECTION
+   ========================================= */
+.testimonials {
+  padding: 8rem 0;
+  background-color: #ffffff; /* Preserves contrast context below the dark FAQ frame */
+  position: relative;
+
+  &__container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: flex-start;
+  }
+
+  /* --- LEFT COLUMN STICKY ARCHITECTURE --- */
+  &__left {
+    position: sticky;
+    top: 6rem; /* Locks elements safely below floating top banners/headers */
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #94A3B8;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  &__title {
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -1.5px;
+  }
+
+  &__intro {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #64748b;
+    margin-bottom: 4rem;
+    max-width: 95%;
+  }
+
+  &__stats-block {
+    display: flex;
+    gap: 3rem;
+    width: 100%;
+    margin-bottom: 3.5rem;
+  }
+
+  .stat-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    &__number {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 0.4rem 0;
+      letter-spacing: -1px;
+    }
+
+    &__stars {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 0.8rem;
+    }
+
+    &__label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #64748b;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  /* --- ACTION ROW & SOCIAL COUPLING --- */
+  &__actions-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  &__add-btn {
+    display: inline-flex;
+    background-color: #aee376; /* Accent Lime Green */
+    color: #0f172a; 
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 1.1rem 2.8rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(174, 227, 118, 0.25);
+    }
+  }
+
+  &__socials {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: #f1f5f9;
+      color: #475569;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background-color: #0043ae; /* Transitions to brand Navy blue on hover */
+        color: #ffffff;
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  /* --- RIGHT COLUMN SCROLL FOOTPRINT --- */
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+    width: 100%;
+    margin-bottom: 3rem;
+  }
+
+  /* SEE MORE LINK TRIGGER */
+  &__see-more-link {
+    background: none;
+    border: none;
+    color: #94A3B8;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+
+    svg {
+      transition: transform 0.2s ease;
+    }
+
+    &:hover {
+      color: #0043ae;
+      svg { transform: translateX(4px); }
+    }
+  }
+}
+
+/* --- REUSABLE TESTIMONIAL CARD FRAME --- */
+.t-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.08);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    margin-bottom: 1.8rem;
+  }
+
+  &__profile-img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: #207ec8; 
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  &__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  &__handle {
+    font-size: 0.8rem;
+    color: #94A3B8;
+    margin: 0;
+    font-weight: 500;
+    margin-top: .25rem;
+
+  }
+
+  &__message {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #334155;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  /* Variant modifier when cards are stacked inside the popup modal viewport */
+  &--modal-view {
+    box-shadow: none;
+    border: 1px solid #e2e8f0;
+    &:hover { transform: none; box-shadow: none; }
+  }
+}
+
+/* =========================================
+   POPUP LAYOUT ARCHITECTURE (MODALS)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 2500; /* Overrides sticky positioning wrappers */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+/* MASTER REVIEW STREAM MODAL CAPACITOR */
+.master-reviews-window {
+  background-color: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 750px;
+  max-height: 85vh; /* Prevents overflow off user's browser device boundaries */
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &__header {
+    padding: 2.5rem 3rem;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 0.4rem 0;
+      letter-spacing: -1px;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    &:hover { color: #0f172a; }
+  }
+
+  /* Scrollable Container Window */
+  &__stream {
+    padding: 3rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: #f8fafc;
+  }
+}
+
+/* STANDARD ACTION FORM DIALOG */
+.modal-form {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 3rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: modalPop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  &__close {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    &:hover { color: #0f172a; }
+  }
+
+  &__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 1rem 0;
+    letter-spacing: -1px;
+  }
+
+  &__desc {
+    font-size: 0.95rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: #f8fafc;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    &:focus {
+      border-color: #207ec8;
+      outline: none;
+    }
+  }
+
+  &__submit {
+    display: block;
+    width: 100%;
+    justify-content: center;
+    background-color: #0043ae;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 1.1rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+}
+
+@keyframes modalPop {
+  0% { transform: scale(0.95); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- RESPONSIVE MEDIA ADAPTATIONS --- */
+@media (max-width: 1024px) {
+  .testimonials {
+    &__container {
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    &__left {
+      position: relative;
+      top: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonials {
+    padding: 4rem 0;
+    &__title { font-size: 2.2rem; }
+    &__intro { margin-bottom: 2.5rem; max-width: 100%; }
+    &__grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    &__actions-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    &__add-btn { width: 100%; justify-content: center; }
+    &__stats-block { gap: 1.5rem; flex-wrap: wrap; }
+    .stat-group__number { font-size: 1.6rem; }
+    .t-card { padding: 2rem 1.5rem; }
+    .master-reviews-window {
+      height: 95vh;
+      &__header { padding: 1.5rem 2rem; }
+      &__stream { padding: 1.5rem; }
+    }
+  }
+}

@@ -1,0 +1,570 @@
+/* Swap 'cargo4.jpg' with your preferred image for the Contact page */
+.contact-hero {
+  position: relative;
+  height: 45vh; 
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* The dark overlay mixed with a new image path */
+  background: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('../../assets/cargo4.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* The signature curved cut-out */
+  border-bottom-right-radius: 120px;
+  overflow: hidden;
+
+  .pages-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    color: #ffffff;
+    text-align: center;
+    animation: heroFadeIn 1s ease-out forwards;
+
+    .accent-line {
+      width: 40px;
+      height: 3px;
+      background-color: #fc5c3d;
+      border-radius: 2px;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 4vw, 3.5rem); 
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      margin: 0;
+
+      span {
+        font-weight: 800;
+      }
+    }
+
+    p {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin: 0;
+      color: #cccccc;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    border-bottom-right-radius: 60px;
+  }
+}
+
+/* =========================================
+   ABOUT PAGE CONTENT (Compact Layout)
+   ========================================= */
+.about-content {
+  padding: 4rem 0; 
+  background-color: #ffffff;
+  color: #333;
+}
+
+.about-container {
+  width: 90%;
+  max-width: 1100px; 
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5rem; 
+}
+
+.about-block {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem; 
+  
+  &.reverse {
+    flex-direction: row-reverse;
+  }
+}
+
+/* --- Typography & Text Layout --- */
+.about-text-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #4b5563;
+    margin-bottom: 1rem; 
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem); 
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0 0 1rem 0;
+    color: #111827;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-size: 0.95rem; 
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0 0 1.5rem 0; 
+  }
+}
+
+/* --- Action Links (Styled as Buttons) --- */
+.about-actions {
+  display: flex;
+  gap: 0.8rem;
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 1.5rem; 
+  margin-bottom: 1.5rem; 
+
+  a {
+    display: inline-flex;    
+    align-items: center;     
+    justify-content: center; 
+    text-decoration: none; 
+    padding: 0.6rem 1.4rem; 
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.btn-primary {
+      background-color: #0052ff; 
+      color: #ffffff;
+      border: 1px solid #0052ff;
+
+      &:hover {
+        background-color: #0040cc;
+      }
+    }
+
+    &.btn-secondary {
+      background-color: transparent;
+      color: #0052ff;
+      border: 1px solid #d1d5db;
+
+      &:hover {
+        border-color: #0052ff;
+      }
+    }
+  }
+}
+
+/* --- Stats Grid --- */
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+
+  .stat-item {
+    h3 {
+      font-size: 1.85rem; 
+      font-weight: 400;
+      color: #111827;
+      margin: 0 0 0.25rem 0;
+    }
+    p {
+      font-size: 0.75rem;
+      margin: 0;
+      line-height: 1.4;
+      color: #9ca3af;
+    }
+  }
+}
+
+/* --- Checkmark Features List --- */
+.about-features-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem; 
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; 
+    font-size: 0.85rem; 
+    color: #0052ff;
+    font-weight: 500;
+
+    .check-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px; 
+      height: 16px;
+      background-color: #0052ff;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.55rem;
+    }
+  }
+}
+
+/* --- Images (Height Constrained for Laptops) --- */
+.about-image-content {
+  flex: 1;
+  width: 100%;
+  
+  img {
+    width: 100%;
+    max-height: 420px; 
+    border-radius: 20px; 
+    object-fit: cover;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 992px) {
+  .about-block, .about-block.reverse {
+    flex-direction: column-reverse !important; 
+    gap: 2.5rem;
+  }
+
+  .about-actions {
+    flex-direction: column;
+    
+    a {
+      width: 100%;
+    }
+  }
+  
+  .about-stats {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .about-features-list {
+    grid-template-columns: 1fr; 
+  }
+  
+  .about-image-content img {
+    max-height: 350px; 
+  }
+}
+
+/* =========================================
+   FOOTPRINT / NETWORK SECTION
+   ========================================= */
+
+.about-footprint {
+  padding: 6rem 0;
+  background-color: #f9fafb; /* Very soft gray to contrast with the white section above */
+  color: #333;
+}
+
+.footprint-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* --- Header Layout --- */
+.footprint-header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #4b5563;
+    margin-bottom: 1rem; 
+  }
+
+  h2 {
+    font-size: clamp(2rem, 3vw, 2.5rem); 
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0 0 1.2rem 0;
+    color: #111827;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-size: 1rem; 
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0; 
+  }
+}
+
+/* --- Network Grid & Connecting Lines --- */
+.footprint-network {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  position: relative;
+  text-align: center;
+
+  /* The background connecting shipping line */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 30px; /* Aligns perfectly with the center of the node-icons */
+    left: 15%;
+    right: 15%;
+    height: 2px;
+    background-image: linear-gradient(to right, #0052ff 50%, transparent 50%);
+    background-size: 15px 100%; /* Creates the dashed effect */
+    opacity: 0.3;
+    z-index: 0;
+  }
+}
+
+.network-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1; /* Keeps the nodes above the dashed line */
+  background: transparent;
+
+  .node-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #0052ff;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 0 0 8px #f9fafb; /* Creates a cutout effect hiding the dashed line behind it */
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.75rem 0;
+  }
+
+  p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #6b7280;
+    margin: 0;
+    padding: 0 1rem;
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS FOR FOOTPRINT
+   ========================================= */
+@media (max-width: 768px) {
+  .footprint-network {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+
+    /* Flips the connecting line from horizontal to vertical */
+    &::before {
+      top: 10%;
+      bottom: 10%;
+      left: 50%;
+      right: auto;
+      width: 2px;
+      height: auto;
+      transform: translateX(-50%);
+      background-image: linear-gradient(to bottom, #0052ff 50%, transparent 50%);
+      background-size: 100% 15px; 
+    }
+  }
+
+  .network-node .node-icon {
+    box-shadow: 0 0 0 8px #f9fafb; /* Cutout effect maintained vertically */
+  }
+}
+
+/* =========================================
+   OUR PEOPLE / TEAM SECTION (Dark Theme)
+   ========================================= */
+
+.about-team {
+  padding: 4rem 0; /* COMPACTED: Reduced from 6rem */
+  background-color: #111827; 
+  color: #ffffff;
+}
+
+.team-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 3rem; /* COMPACTED: Reduced from 4rem */
+}
+
+/* --- Image Layout --- */
+.team-image-wrapper {
+  flex: 1;
+  width: 100%;
+
+  img {
+    width: 100%;
+    max-height: 380px; /* COMPACTED: Caps height for laptop viewports */
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* --- Content & Typography --- */
+.team-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .badge-dark {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border: 1px solid #374151;
+    border-radius: 50px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 0.8rem; /* COMPACTED */
+  }
+
+  h2 {
+    font-size: clamp(1.75rem, 2.5vw, 2.25rem); 
+    font-weight: 300;
+    line-height: 1.2;
+    margin: 0 0 1rem 0; /* COMPACTED */
+    color: #ffffff;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    font-size: 0.95rem; 
+    line-height: 1.5;
+    color: #9ca3af;
+    margin: 0 0 0.8rem 0; /* COMPACTED */
+  }
+
+  /* BUTTON FIX: Styles explicitly added for this section */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 0.6rem 1.4rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #0052ff;
+    color: #ffffff;
+    border: 1px solid #0052ff;
+    margin-top: 1.2rem; /* Adds space above the button */
+
+    &:hover {
+      background-color: #0040cc;
+    }
+  }
+}
+
+/* --- Guarantees List --- */
+.team-guarantees {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem; /* COMPACTED */
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+
+  .guarantee-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .guarantee-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background-color: rgba(0, 82, 255, 0.2);
+      color: #3b82f6; 
+      border-radius: 50%;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 0.2rem;
+    }
+
+    h4 {
+      margin: 0 0 0.15rem 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS FOR TEAM SECTION
+   ========================================= */
+@media (max-width: 992px) {
+  .team-container {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .team-image-wrapper img {
+    max-height: 320px;
+  }
+
+  .team-content .btn-primary {
+    width: 100%;
+    text-align: center;
+  }
+}

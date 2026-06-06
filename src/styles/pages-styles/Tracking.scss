@@ -1,0 +1,515 @@
+/* =========================================
+   GENERAL TRACKING WRAPPER
+   ========================================= */
+.tracking-page {
+  font-family: inherit;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  padding-bottom: 6rem;
+}
+
+/* =========================================
+   PREMIUM GEOMETRIC HERO BACKGROUND
+   ========================================= */
+.tracking-hero {
+  background-color: #fcfdfe; 
+  border-bottom: 1px solid #e5e7eb;
+  /* Deepened bottom padding to absorb the overlapping cards cleanly */
+  padding: 8rem 1.5rem 9rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  /* Accent 1: Ambient spotlight glow layered behind the content box */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 350px;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(0, 82, 255, 0.07) 0%, rgba(0, 82, 255, 0) 100%);
+    filter: blur(50px);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Accent 2: High-fidelity grid blueprint mapping overlay */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, rgba(0, 82, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 82, 255, 0.04) 1px, transparent 1px);
+    background-size: 44px 44px;
+    background-position: center top;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
+    pointer-events: none;
+    z-index: 2; /* Sits underneath content to allow seamless input interaction */
+  }
+}
+
+.tracking-hero-content {
+  max-width: 650px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 5; /* Pushes text above the active design grids safely */
+
+  h1 {
+    font-size: clamp(2.5rem, 5vw, 3.25rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #011b4a; 
+    margin: 0 0 1rem 0;
+  }
+
+  p {
+    font-size: 1.15rem;
+    color: #4b5563;
+    margin: 0 0 3rem 0;
+    line-height: 1.6;
+  }
+}
+
+/* Integrated Minimal Input Console */
+.tracking-search-form {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+
+  .search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+
+    .search-icon {
+      position: absolute;
+      left: 1.25rem;
+      width: 20px;
+      height: 20px;
+      color: #6b7280;
+    }
+
+    input {
+      width: 100%;
+      padding: 1.25rem 3rem;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #111827;
+      background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(1, 27, 74, 0.03);
+      transition: all 0.2s ease;
+      outline: none;
+
+      &::placeholder {
+        color: #9ca3af;
+        font-weight: 400;
+      }
+
+      &:focus {
+        border-color: #0052ff;
+        box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.15), 0 4px 12px rgba(1, 27, 74, 0.03);
+      }
+
+      &:disabled {
+        background-color: #f3f4f6;
+        color: #9ca3af;
+      }
+    }
+
+    .clear-btn {
+      position: absolute;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      color: #9ca3af;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      
+      &:hover {
+        color: #111827;
+      }
+    }
+  }
+
+  .track-btn {
+    background-color: #0052ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    padding: 0 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 82, 255, 0.15);
+
+    &:hover:not(:disabled) {
+      background-color: #0040cc;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    &:disabled {
+      background-color: #4b5563;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.error-message {
+  display: block;
+  color: #ef4444;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* =========================================
+   RESULTS SECTION (Overlapping Layout Frame)
+   ========================================= */
+.tracking-results-section {
+  padding: 0 1.5rem;
+  /* Aggressively shifts container upwards to intersect the baseline of the grid design */
+  margin-top: -6rem; 
+  position: relative;
+  z-index: 10; 
+}
+
+.results-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 1. Status Overview Card Component */
+.status-overview-card {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 0 20px rgba(0, 82, 255, 0.02);
+  margin-bottom: 2.5rem;
+  border: 1px solid #e5e7eb;
+
+  .status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+
+    .tracking-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+      letter-spacing: 0.05em;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+
+      &.in-transit {
+        background-color: #eff6ff;
+        color: #1d4ed8;
+        border: 1px solid #bfdbfe;
+        
+        .dot { background-color: #2563eb; }
+      }
+
+      &.delivered {
+        background-color: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+
+        .dot { background-color: #10b981; }
+      }
+    }
+  }
+
+  .status-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .detail-label {
+        font-size: 0.85rem;
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .detail-value {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #111827;
+
+        &.highlight {
+          color: #0052ff;
+        }
+      }
+    }
+  }
+}
+
+/* 2. Interactive Dashboard Layout Splitting */
+.tracking-content-grid {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* 3. Timeline Tracker Node Styles */
+.timeline-container {
+  background-color: #ffffff;
+  border-radius: 20px;
+  padding: 2.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(1, 27, 74, 0.01);
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 2rem 0;
+  }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+
+    .timeline-item {
+      position: relative;
+      padding-left: 2.5rem;
+      padding-bottom: 2.5rem;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 20px;
+        bottom: 0;
+        width: 2px;
+        background-color: #e5e7eb;
+      }
+
+      &:last-child {
+        padding-bottom: 0;
+        &::before {
+          display: none;
+        }
+      }
+
+      .timeline-marker {
+        position: absolute;
+        left: 0;
+        top: 4px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        border: 3px solid #e5e7eb;
+        z-index: 2;
+        transition: all 0.3s ease;
+      }
+
+      .timeline-content {
+        .timeline-header {
+          display: flex;
+          flex-direction: column;
+          gap: 0.25rem;
+          margin-bottom: 0.5rem;
+
+          .event-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+          }
+
+          .event-location {
+            font-size: 0.9rem;
+            color: #6b7280;
+            font-weight: 500;
+          }
+        }
+
+        .event-datetime {
+          font-size: 0.85rem;
+          color: #9ca3af;
+        }
+      }
+
+      &.completed {
+        .timeline-marker {
+          background-color: #10b981;
+          border-color: #10b981;
+        }
+        &::before {
+          background-color: #10b981;
+        }
+      }
+
+      &.current {
+        .timeline-marker {
+          background-color: #0052ff;
+          border-color: #0052ff;
+          box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.15);
+        }
+      }
+
+      &.pending {
+        .timeline-content {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
+
+/* 4. Support Call-To-Action Box */
+.support-sidebar {
+  .support-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(1, 27, 74, 0.01);
+
+    .support-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0 0 1rem 0;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin: 0 0 2rem 0;
+    }
+
+    .support-btn {
+      display: block;
+      width: 100%;
+      background-color: #f3f4f6;
+      color: #111827;
+      text-decoration: none;
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: background-color 0.2s ease;
+      margin-bottom: 1.5rem;
+
+      &:hover {
+        background-color: #e5e7eb;
+      }
+    }
+
+    .support-phone {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      
+      span {
+        color: #9ca3af;
+        font-weight: 500;
+      }
+
+      a {
+        color: #0052ff;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+/* =========================================
+   RESPONSIVENESS UTILITIES
+   ========================================= */
+@media (max-width: 992px) {
+  .tracking-content-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .status-overview-card .status-header {
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .tracking-hero {
+    padding: 6rem 1rem 8rem 1rem;
+  }
+
+  .tracking-search-form {
+    flex-direction: column;
+
+    .track-btn {
+      width: 100%;
+      padding: 1.25rem;
+    }
+  }
+
+  .tracking-results-section {
+    margin-top: -5rem;
+  }
+
+  .status-overview-card, .timeline-container, .support-sidebar .support-card {
+    padding: 1.5rem;
+  }
+}

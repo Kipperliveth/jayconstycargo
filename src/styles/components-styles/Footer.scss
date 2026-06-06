@@ -1,0 +1,320 @@
+// Brand Color Variables
+$primary-dark: #0043ae;   // Deep Logistics Navy
+$primary-blue: #207ec8;   // Vibrant Tech Blue
+$accent-green: #aee376;   // Vibrant Lime Green
+$text-light: #e2e8f0;     // Light slate for readable text
+$white: #ffffff;
+
+// Deep Footer Shades
+$footer-cta-bg: darken($primary-dark, 12%);    
+$footer-main-bg: darken($primary-dark, 18%);   
+$footer-bottom-bg: darken($primary-dark, 22%); 
+
+.footer {
+  // NEW: A smooth vertical gradient flowing from dark to deepest navy
+  background: linear-gradient(180deg, $footer-main-bg 0%, $footer-bottom-bg 100%); 
+  color: $text-light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  margin-top: auto;
+
+  // --- CTA Strip ---
+  &__cta-strip {
+    // NEW: A subtle diagonal gradient for the CTA banner to make it pop slightly from the base
+    background: linear-gradient(135deg, darken($primary-dark, 10%) 0%, $footer-cta-bg 100%);
+    border-bottom: 1px solid rgba($white, 0.03); 
+    padding: 3rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  &__cta-content {
+    h3 {
+      color: $white; 
+      font-size: 1.8rem;
+      margin: 0 0 0.5rem 0;
+    }
+    p {
+      color: rgba($white, 0.7); 
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    
+    .strip{
+        line-height: 1.5;
+
+    }
+  }
+
+  // NEW: Container for the buttons
+  &__cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  &__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: $primary-blue; 
+    color: $white;
+    padding: 1rem 2rem;
+    border-radius: 6px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid $primary-blue; // Added border to match the outline variant
+
+    &:hover {
+      background-color: $white; 
+      color: $footer-main-bg;
+      border-color: $white;
+      transform: translateY(-2px);
+    }
+
+    // NEW: Outline variant for secondary action
+    &--outline {
+      background-color: transparent;
+      border: 2px solid rgba($white, 0.5);
+      color: $white;
+
+      &:hover {
+        background-color: rgba($white, 0.05);
+        border-color: $white;
+        color: $white; 
+      }
+    }
+  }
+
+  // --- Main Footer Grid ---
+  &__container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 5rem 0;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+  }
+
+  h4 {
+    color: $white;
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 2px;
+      background-color: #e2e8f0; 
+    }
+  }
+
+  &__brand {
+    .footer__logo {
+      height: auto;
+      width: 150px;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    .footer__bio {
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      color: rgba($text-light, 0.7); 
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba($white, 0.05); 
+      color: $white;
+      border-radius: 50%;
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: $primary-blue; 
+        color: $white;
+        transform: translateY(-3px);
+      }
+    }
+  }
+
+  &__links {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 0.8rem;
+
+        a {
+          color: rgba($text-light, 0.7);
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: color 0.2s ease;
+
+          &:hover {
+            color: $white; 
+          }
+        }
+      }
+    }
+  }
+
+&__contact-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      color: rgba($text-light, 0.7);
+      font-size: 0.95rem;
+      line-height: 1.5;
+
+      // NEW: Styles the links to look clean and interactive
+      a {
+        color: inherit; // Inherits the soft light color from the li
+        text-decoration: none; // Removes the default blue underline
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: $white; // Lights up on hover
+        }
+      }
+
+      .icon {
+        color: $primary-blue; 
+        flex-shrink: 0;
+        margin-top: 2px;
+        display: none; 
+      }
+    }
+  }
+
+  // --- Bottom Copyright Bar ---
+  &__bottom {
+    border-top: 1px solid rgba($white, 0.05);
+    padding: 1.5rem 0;
+    // NEW: Using a semi-transparent black overlay so the gradient from .footer shows through
+    background-color: rgba(0, 0, 0, 0.2); 
+  }
+
+  &__bottom-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: rgba($text-light, 0.5); 
+    }
+  }
+
+  &__bottom-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .divider {
+      color: rgba($text-light, 0.2);
+    }
+
+    a {
+      color: rgba($text-light, 0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $white; 
+      }
+    }
+  }
+}
+
+// --- Responsive Breakpoints ---
+@media (max-width: 992px) {
+  .footer {
+    &__container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    &__cta-strip {
+      flex-direction: column;
+      text-align: center;
+      padding: 2.5rem 1rem; // Slightly tighter padding on mobile
+    }
+    
+    // Force buttons to stay on the same row
+    &__cta-actions {
+      justify-content: center;
+      flex-wrap: nowrap; // Prevents them from stacking
+      width: 100%;
+      gap: 0.5rem; // Tighter gap between the two buttons
+    }
+
+    // Shrink button dimensions so they actually fit on small screens
+    &__btn {
+      flex: 1; // Makes both buttons take up an equal half of the row
+      padding: 0.8rem 0.5rem; // Less horizontal padding
+      font-size: 0.85rem; // Slightly smaller text
+      justify-content: center;
+      text-align: center;
+
+      // Shrink the icons slightly to match the smaller text
+      svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0; // Prevents the icon from getting squished
+      }
+    }
+
+    &__container {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding: 3rem 0;
+    }
+
+    &__bottom-container {
+      flex-direction: column;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}

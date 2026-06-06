@@ -1,0 +1,81 @@
+.pages-hero {
+  position: relative;
+  /* Slightly shorter height for a tighter, minimalist frame */
+  height: 45vh; 
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Deepened the overlay slightly so the thinner text pops beautifully */
+  background: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('../../assets/cargo1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* The signature curved cut-out */
+  border-bottom-right-radius: 120px;
+  overflow: hidden;
+
+  .pages-hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem; /* Consistent spacing between elements */
+    color: #ffffff;
+    text-align: center;
+    
+    /* A subtle upward fade-in animation for a premium feel */
+    animation: heroFadeIn 1s ease-out forwards;
+
+    /* Creative touch: A minimalist accent line */
+    .accent-line {
+      width: 40px;
+      height: 3px;
+      background-color: #fc5c3d; /* Coral/orange accent color from your reference image */
+      border-radius: 2px;
+    }
+
+    h1 {
+      /* Scaled down size: Starts at 2.5rem on mobile, maxes out at 3.5rem on desktop */
+      font-size: clamp(2.5rem, 4vw, 3.5rem); 
+      font-weight: 300; /* Lighter weight for minimalism */
+      letter-spacing: 0.02em;
+      margin: 0;
+
+      /* Creative touch: Making just the "us." bold to create typographic contrast */
+      span {
+        font-weight: 800;
+      }
+    }
+
+    /* Creative touch: A widely spaced, uppercase subtitle */
+    p {
+      font-size: 0.8rem;
+      font-weight: 400;
+      letter-spacing: 0.25em; /* Wide tracking is a staple of minimalist design */
+      text-transform: uppercase;
+      margin: 0;
+      color: #cccccc; /* Slightly muted white so it doesn't compete with the h1 */
+    }
+  }
+}
+
+/* Keyframes for the smooth entrance */
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustment for the curve */
+@media (max-width: 768px) {
+  .pages-hero {
+    border-bottom-right-radius: 60px;
+  }
+}

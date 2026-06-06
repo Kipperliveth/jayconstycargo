@@ -1,0 +1,417 @@
+/* =========================================
+   SERVICES HERO SPECIFIC (Restored)
+   ========================================= */
+.services-hero {
+  background: linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('../../assets/cargo4.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* =========================================
+   GLOBAL MODERN SERVICES STYLES
+   ========================================= */
+.services-modern {
+  font-family: inherit;
+  color: #111827;
+  overflow-x: hidden; /* Prevents horizontal scroll from collages */
+}
+
+.modern-container {
+  width: 90%;
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.modern-section {
+  padding: 6rem 0;
+}
+
+.bg-light-gray {
+  background-color: #f9fafb;
+}
+
+/* =========================================
+   TYPOGRAPHY & UTILITIES
+   ========================================= */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+
+  &-outline {
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+  }
+  &-dark {
+    border: 1px solid #374151;
+    color: #9ca3af;
+  }
+}
+
+.modern-title {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.03em;
+}
+
+.modern-subtitle {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0 0 1.5rem 0;
+}
+
+.modern-body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #6b7280;
+  margin: 0 0 1.5rem 0;
+}
+
+.text-white { color: #ffffff !important; }
+.text-gray { color: #9ca3af !important; }
+
+/* Spacing Utils */
+.pr-lg { padding-right: 3rem; }
+.pl-lg { padding-left: 3rem; }
+.mt-lg { margin-top: 2rem; }
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #0052ff;
+  color: #ffffff;
+  border: 1px solid #0052ff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0040cc;
+  }
+}
+
+/* =========================================
+   FLEX LAYOUTS (The Bento/Collage Split)
+   ========================================= */
+.flex-layout {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.modern-content {
+  flex: 1;
+}
+
+/* Specific Content Tweaks */
+.service-highlight {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f3f4f6;
+  border-left: 4px solid #0052ff;
+  border-radius: 0 12px 12px 0;
+
+  &.muted {
+    background: transparent;
+    border-left: 4px solid #d1d5db;
+    opacity: 0.7;
+  }
+
+  h3 {
+    margin: 0 0 0.4rem 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .tag-soon {
+      background: #4b5563;
+      color: white;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #4b5563;
+    line-height: 1.5;
+  }
+}
+
+.modern-checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #111827;
+
+    .check {
+      color: #0052ff;
+      background: rgba(0, 82, 255, 0.1);
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-size: 0.6rem;
+    }
+  }
+}
+
+/* =========================================
+   IMAGE COLLAGES (The Magic)
+   ========================================= */
+.modern-collage {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  padding: 2rem; 
+
+  .collage-main {
+    width: 90%;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    display: block;
+    object-fit: cover;
+    max-height: 500px;
+  }
+
+  .collage-sub {
+    position: absolute;
+    border: 8px solid #ffffff; 
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+/* Top Hero Collage Specifics */
+.right-collage {
+  .collage-main {
+    margin-left: auto; 
+  }
+  .sub-bottom-left {
+    width: 45%;
+    height: 180px;
+    bottom: -1rem;
+    left: 0;
+  }
+  .sub-top-left {
+    width: 35%;
+    height: 140px;
+    top: 2rem;
+    left: -2rem;
+  }
+  .floating-stat {
+    position: absolute;
+    bottom: 4rem;
+    right: -1rem;
+    background: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #f3f4f6;
+
+    .stat-icon {
+      font-size: 1.5rem;
+      color: #0052ff;
+      background: rgba(0, 82, 255, 0.1);
+      width: 40px; height: 40px;
+      display: flex; justify-content: center; align-items: center;
+      border-radius: 50%;
+    }
+    div {
+      display: flex; flex-direction: column;
+      strong { font-size: 0.9rem; color: #111827; }
+      span { font-size: 0.75rem; color: #6b7280; }
+    }
+  }
+}
+
+/* Procurement Collage Specifics */
+.left-collage {
+  .collage-main {
+    margin-right: auto; 
+  }
+  .sub-bottom-right {
+    width: 50%;
+    height: 200px;
+    bottom: -1rem;
+    right: 0;
+  }
+}
+
+/* =========================================
+   STATS BANNER
+   ========================================= */
+.stats-banner {
+  background-color: #ffffff;
+  padding: 3rem 0;
+  border-top: 1px solid #f3f4f6;
+  border-bottom: 1px solid #f3f4f6;
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+    gap: 2rem;
+
+    .stat-item {
+      h2 {
+        font-size: 3rem;
+        font-weight: 300;
+        color: #111827;
+        margin: 0 0 0.5rem 0;
+        letter-spacing: -0.05em;
+      }
+      p {
+        font-size: 0.9rem;
+        color: #6b7280;
+        margin: 0;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+/* =========================================
+   PIPELINE / 3-COLUMN GRID
+   ========================================= */
+.modern-pipeline {
+  padding: 5rem 0;
+  background-color: #ffffff;
+  
+  .pipeline-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+
+    .pipeline-item {
+      text-align: center;
+      
+      .pipeline-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+      }
+      h3 {
+        font-size: 1.2rem;
+        margin: 0 0 1rem 0;
+        color: #111827;
+      }
+      p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* =========================================
+   FINAL MILE (Dark Theme)
+   ========================================= */
+.modern-final-mile {
+  padding: 6rem 0;
+  background-color: #111827;
+
+  .final-mile-image img {
+    width: 100%;
+    max-height: 450px;
+    object-fit: cover;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 992px) {
+  .flex-layout {
+    flex-direction: column;
+    gap: 4rem;
+  }
+  
+  .reverse-mobile {
+    flex-direction: column-reverse;
+  }
+
+  .pr-lg, .pl-lg {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .modern-collage {
+    padding: 1rem 0;
+
+    .collage-main {
+      width: 100%;
+    }
+    
+    .floating-stat {
+      bottom: -2rem;
+      right: 1rem;
+    }
+  }
+
+  .stats-banner .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .modern-checklist {
+    grid-template-columns: 1fr;
+  }
+
+  .modern-pipeline .pipeline-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modern-content {
+    text-align: center;
+  }
+
+  .modern-checklist {
+    text-align: left;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
