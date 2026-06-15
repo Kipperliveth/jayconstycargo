@@ -158,7 +158,7 @@ function Home() {
           <div className="hero__content">
             <h1 className="hero__title">Seamless shipping between the UK and Nigeria.</h1>
             <p className="hero__subtitle">
-              Jayconsty Cargo provides fast, secure, and reliable procurement and logistics. Whether you are moving goods from London to Port Harcourt or vice versa, we make it effortless.
+              Jayconsty Cargo provides fast, secure, and reliable procurement and logistics. Whether you are moving goods from London to Nigeria or vice versa, we make it effortless.
             </p>
             <div className="hero__actions">
               <Link to="/contact" className="btn btn--primary">Get a Quote</Link>
