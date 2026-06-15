@@ -13,6 +13,9 @@
 @import url("./components-styles/Footer.scss");
 @import url("./components-styles/Navbar.scss");
 
+@import url("../Admin/AdminDashboard.scss");
+@import url("../Admin/Login.scss");
+
 *{
     margin: 0;
     padding: 0;

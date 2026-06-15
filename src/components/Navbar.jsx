@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- UPDATED IMPORTS ---
 // Standard Colored Logo
 import coloredLogo from "../assets/jayconsty-colored-logo.png"
-// White Logo (Corrected variable name from 'white-logo' to 'whiteLogo')
+// White Logo
 import whiteLogo from "../assets/jayconsty-logo.png"; 
 
 function Navbar() {
@@ -33,11 +32,7 @@ function Navbar() {
     };
 
     window.addEventListener('resize', handleResize);
-    
-    // Cleanup the event listener so it doesn't cause memory leaks
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, [isMenuOpen]);
 
   // Lock background scrolling when mobile menu is open
@@ -60,35 +55,34 @@ function Navbar() {
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // --- NEW: HIDE NAVBAR ON ADMIN ROUTES ---
+  // Must be placed after all hooks to avoid React errors
+  if (location.pathname.startsWith('/admin')) {
+    return null; 
+  }
 
   // 2. Dynamically construct the class list based on state and route
   let navClass = 'navbar';
   
   if (isTransparentRoute) {
-    // On /about: Solid if scrolled OR if mobile menu is open
     if (isScrolled || isMenuOpen) {
       navClass += ' navbar--fixed-scrolled';
     } else {
-      // Top of /about: Transparent
       navClass += ' navbar--transparent';
     }
   } else {
-    // Default behavior for other pages (/, /services, etc.)
     if (isScrolled || isMenuOpen) {
       navClass += ' navbar--scrolled';
     }
   }
 
   return (
-    // Apply the dynamic classes
     <nav className={navClass}>
       <div className="navbar__container">
         
-        {/* --- UPDATED LOGO SECTION --- */}
         <Link to="/" className="navbar__logo-container">
           <img 
             src={ (isTransparentRoute && !isScrolled) ? whiteLogo : coloredLogo } 
@@ -96,7 +90,6 @@ function Navbar() {
           />
         </Link>
 
-        {/* Hamburger Menu Icon (Mobile Only) */}
         <button 
           className={`navbar__hamburger ${isMenuOpen ? 'is-active' : ''}`} 
           onClick={toggleMenu}
@@ -107,7 +100,6 @@ function Navbar() {
           <span className="bar"></span>
         </button>
 
-        {/* Desktop Navigation Links */}
         <div className="navbar__menu desktop-only">
           <ul className="navbar__links">
             <li><NavLink to="/about" className={({ isActive }) => isActive ? 'active' : ''}>About</NavLink></li>
@@ -119,9 +111,7 @@ function Navbar() {
           <Link to="/tracking" className="navbar__cta">Track Shipment</Link>
         </div>
 
-        {/* --- UPGRADED MOBILE MENU --- */}
         <AnimatePresence>
-          {/* 1. The Dark Blurred Overlay */}
           {isMenuOpen && (
             <motion.div 
               initial={{ opacity: 0 }}
@@ -133,7 +123,6 @@ function Navbar() {
             />
           )}
 
-          {/* 2. The Slide-out Drawer */}
           {isMenuOpen && (
             <motion.div 
               initial={{ x: '100%' }}

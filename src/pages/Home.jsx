@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { 
+  collection, getDocs, getDoc, doc, addDoc, query, where 
+} from 'firebase/firestore';
+import { txtdb } from '../firebase-config';
 import { 
   ArrowRight, Package, Globe, ShieldCheck, 
   ArrowUpRight, ChevronDown, ChevronUp, MessageCircle,
-  Star, X, Quote
+  Star, X, CheckCircle
 } from 'lucide-react';
 
 import cargo1 from "../assets/cargo1.jpg";
@@ -16,129 +20,133 @@ function Home() {
   const [openFaq, setOpenFaq] = useState(0); 
   const [isModalOpen, setIsModalOpen] = useState(false); 
   const [isSeeAllOpen, setIsSeeAllOpen] = useState(false); 
+  
+  // Reviews Data State
+  const [reviews, setReviews] = useState([]);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(true);
+
+  // Review Submission Flow State
+  const [reviewStep, setReviewStep] = useState(1); // 1: Verify, 2: Write Review, 3: Success
   const [orderNumber, setOrderNumber] = useState('');
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [verifyError, setVerifyError] = useState('');
+
+  // Form Field State
+  const [revName, setRevName] = useState('');
+  const [revEmail, setRevEmail] = useState('');
+  const [revRating, setRevRating] = useState(5);
+  const [revComment, setRevComment] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   // --- HANDLERS ---
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index);
   };
 
-  const toggleModal = () => setIsModalOpen(!isModalOpen);
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
+    if (!isModalOpen) {
+      // Reset form state when opening
+      setReviewStep(1);
+      setOrderNumber('');
+      setVerifyError('');
+      setRevName('');
+      setRevEmail('');
+      setRevComment('');
+      setRevRating(5);
+    }
+  };
+
   const toggleSeeAllModal = () => setIsSeeAllOpen(!isSeeAllOpen);
+
+  // --- FIREBASE: FETCH APPROVED REVIEWS ---
+  useEffect(() => {
+    const fetchApprovedReviews = async () => {
+      try {
+        const q = query(collection(txtdb, "reviews"), where("isApproved", "==", true));
+        const querySnapshot = await getDocs(q);
+        const fetchedReviews = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        // Sort newest first
+        setReviews(fetchedReviews.reverse());
+      } catch (error) {
+        console.error("Error fetching reviews:", error);
+      } finally {
+        setIsLoadingReviews(false);
+      }
+    };
+    fetchApprovedReviews();
+  }, []);
+
+  // --- FIREBASE: VERIFY SHIPMENT ID ---
+  const handleVerifyTracking = async (e) => {
+    e.preventDefault();
+    if (!orderNumber) return;
+
+    setIsVerifying(true);
+    setVerifyError('');
+
+    try {
+      const docRef = doc(txtdb, "shipments", orderNumber.trim().toUpperCase());
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setRevName(data.senderName || '');
+        setRevEmail(data.senderEmail || '');
+        setReviewStep(2); // Move to review form
+      } else {
+        setVerifyError("Order number not found. Please verify your tracking ID.");
+      }
+    } catch (err) {
+      console.error(err);
+      setVerifyError("Network error. Please try again.");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
+
+  // --- FIREBASE: SUBMIT REVIEW FOR APPROVAL ---
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!revName || !revComment) return;
+
+    setIsSubmittingReview(true);
+    try {
+      const now = new Date();
+      const formattedDate = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      
+      await addDoc(collection(txtdb, "reviews"), {
+        name: revName,
+        email: revEmail,
+        rating: parseInt(revRating),
+        comment: revComment,
+        date: formattedDate,
+        isApproved: false // Admin must approve before it shows on site
+      });
+      
+      setReviewStep(3); // Move to success confirmation
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    } finally {
+      setIsSubmittingReview(false);
+    }
+  };
 
   // --- DATA ---
   const faqData = [
-    {
-      question: "How do I get my dedicated UK warehouse address?",
-      answer: "Once you create a free account with Jayconsty Cargo, your dashboard will display your unique UK warehouse address along with your personal customer identification code. Use this address at checkout whenever you shop from UK online retailers."
-    },
-    {
-      question: "Can you shop on my behalf if a UK store doesn't accept my Nigerian card?",
-      answer: "Yes! We offer a dedicated Procurement Service. Simply send us the links to the items you want to buy, and we will handle the purchase using our local UK payment methods and have them processed directly into your shipping queue."
-    },
-    {
-      question: "Do you offer shipment consolidation?",
-      answer: "Absolutely. If you buy from multiple UK retailers (e.g., ASOS, Amazon, Zara), we can hold your items at our London hub for up to 14 days free of charge, combine them into a single package, and ship them together to save you significant freight costs."
-    },
-    {
-      question: "What is the minimum weight requirement for shipping?",
-      answer: "For Air Freight, our minimum shipping weight is 2kg. For items below this weight, the 2kg minimum charge applies. For Sea Freight, our minimum volume requirement is 0.1 CBM."
-    },
-    {
-      question: "What is volumetric weight, and how does it affect my cost?",
-      answer: "International courier rules dictate that freight is charged on whichever value is greater: actual physical weight or volumetric (space occupied) weight. Volumetric weight is calculated as (Length × Width × Height in cm) ÷ 5000. Large, lightweight items like pillows or suitcases are usually billed on volume."
-    },
-    {
-      question: "Are your rates fully inclusive of customs clearing in Nigeria?",
-      answer: "Yes, our quoted rates are end-to-end and include standard customs clearance paperwork and port fees in Nigeria. The price you are quoted for weight or volume is the final price you pay to receive your goods at our main depots."
-    },
-    {
-      question: "When are your weekly cutoff dates for dispatches?",
-      answer: "Our Air Freight cutoff is every Thursday at 4:00 PM UK time for our Friday departure flight. Our Sea Freight containers are loaded and sealed on the 1st and 3rd Saturday of every month."
-    },
-    {
-      question: "How long does it take for goods to get to states outside Lagos?",
-      answer: "Once your Air Freight cargo arrives in Lagos (3-5 business days), forwarding to other regions like Abuja, Port Harcourt, or Enugu typically adds an additional 2-3 business days depending on local interstate transport links."
-    },
-    {
-      question: "Can I ship perfumes, spray deodorants, or cosmetics?",
-      answer: "Perfumes and pressurized aerosol cans are classified as 'Dangerous Goods' by airlines due to flammability. They cannot travel on standard Air Freight. However, they can be securely packed and shipped safely via our Sea Freight routes."
-    },
-    {
-      question: "Can I ship high-value electronics, phones, and laptops?",
-      answer: "Yes, we ship electronics weekly. However, high-value devices must be explicitly declared upon arrival at our UK hub for specialized handling and security tracking. These items are subject to a standard electronics handling clearing fee."
-    },
-    {
-      question: "Do you offer doorstep delivery across Nigeria?",
-      answer: "Yes, we offer final-mile doorstep delivery to homes and offices nationwide for an additional local delivery fee. Alternatively, you can choose free self-pickup from our main destination depots in Lagos and Port Harcourt."
-    },
-    {
-      question: "Is my shipment insured against loss or damage?",
-      answer: "Every shipment is automatically covered up to a standard value of £50. For high-value commercial shipments, luxury goods, or electronics, we strongly advise purchasing our optional Extended Cargo Insurance, which covers up to 100% of the declared invoice value."
-    }
-  ];
-
-  const testimonialsData = [
-    {
-      id: 1,
-      name: "Tega Oduwole",
-      handle: "@tegajoseph",
-      message: "I was extremely stressed shipping my commercial kitchen equipment. Jayconsty was incredible. Transparent pricing from London to Lagos port. Highly professional.",
-      initial: "T"
-    },
-    {
-      id: 2,
-      name: "Folasade Bankole",
-      handle: "@FolaBankz",
-      message: "Procurement is usually a headache, but these guys handled my purchases across 5 different UK stores and shipped to PH. Everything arrived consolidated and cleared.",
-      initial: "F"
-    },
-    {
-      id: 3,
-      name: "Samuel Eze",
-      handle: "@Samuel_EzeLogistics",
-      message: "Our business relies on weekly UK-NGA deliveries. Jayconsty's consistency with Sea Freight schedules clears all the port hassle for us. The best logistics partner.",
-      initial: "S"
-    },
-    {
-      id: 4,
-      name: "Musa Abubakar",
-      handle: "@MusaAba",
-      message: "Fast UK Turnaround. Their London hub received my fragile electronic goods and shipped them door-to-door within 4 days. Absolutely reliable.",
-      initial: "M"
-    }
-  ];
-
-  const allReviewsData = [
-    ...testimonialsData,
-    {
-      id: 5,
-      name: "Chioma Nnaji",
-      handle: "@Chio_Nnaji",
-      message: "Standard Air freight came exactly within 4 days. Unbelievable turnaround time compared to standard couriers. Highly recommended for small retail owners.",
-      initial: "C"
-    },
-    {
-      id: 6,
-      name: "Abiodun Oyekan",
-      handle: "@AbiodunOye",
-      message: "I used their Procurement Service because my Nigerian Mastercard kept getting rejected on UK fashion sites. Smooth process from payment to hub pickup in Lagos.",
-      initial: "A"
-    },
-    {
-      id: 7,
-      name: "Ngozi Egwu",
-      handle: "@Ngozi_Egwu",
-      message: "Excellent cargo insurance policies. Had a fragile vintage mirror shipped via Sea Freight and it landed without a single scratch or clearing delay.",
-      initial: "N"
-    },
-    {
-      id: 8,
-      name: "Yusuf Danjuma",
-      handle: "@YusufDanLogistics",
-      message: "Their consolidation system saved me thousands. Had packages from Amazon, ASOS, and Zara grouped into a single tight dispatch weight block.",
-      initial: "Y"
-    }
+    { question: "How do I get my dedicated UK warehouse address?", answer: "Once you create a free account with Jayconsty Cargo, your dashboard will display your unique UK warehouse address along with your personal customer identification code. Use this address at checkout whenever you shop from UK online retailers." },
+    { question: "Can you shop on my behalf if a UK store doesn't accept my Nigerian card?", answer: "Yes! We offer a dedicated Procurement Service. Simply send us the links to the items you want to buy, and we will handle the purchase using our local UK payment methods and have them processed directly into your shipping queue." },
+    { question: "Do you offer shipment consolidation?", answer: "Absolutely. If you buy from multiple UK retailers (e.g., ASOS, Amazon, Zara), we can hold your items at our London hub for up to 14 days free of charge, combine them into a single package, and ship them together to save you significant freight costs." },
+    { question: "What is the minimum weight requirement for shipping?", answer: "For Air Freight, our minimum shipping weight is 2kg. For items below this weight, the 2kg minimum charge applies. For Sea Freight, our minimum volume requirement is 0.1 CBM." },
+    { question: "What is volumetric weight, and how does it affect my cost?", answer: "International courier rules dictate that freight is charged on whichever value is greater: actual physical weight or volumetric (space occupied) weight. Volumetric weight is calculated as (Length × Width × Height in cm) ÷ 5000. Large, lightweight items like pillows or suitcases are usually billed on volume." },
+    { question: "Are your rates fully inclusive of customs clearing in Nigeria?", answer: "Yes, our quoted rates are end-to-end and include standard customs clearance paperwork and port fees in Nigeria. The price you are quoted for weight or volume is the final price you pay to receive your goods at our main depots." },
+    { question: "When are your weekly cutoff dates for dispatches?", answer: "Our Air Freight cutoff is every Thursday at 4:00 PM UK time for our Friday departure flight. Our Sea Freight containers are loaded and sealed on the 1st and 3rd Saturday of every month." },
+    { question: "How long does it take for goods to get to states outside Lagos?", answer: "Once your Air Freight cargo arrives in Lagos (3-5 business days), forwarding to other regions like Abuja, Port Harcourt, or Enugu typically adds an additional 2-3 business days depending on local interstate transport links." },
+    { question: "Can I ship perfumes, spray deodorants, or cosmetics?", answer: "Perfumes and pressurized aerosol cans are classified as 'Dangerous Goods' by airlines due to flammability. They cannot travel on standard Air Freight. However, they can be securely packed and shipped safely via our Sea Freight routes." },
+    { question: "Can I ship high-value electronics, phones, and laptops?", answer: "Yes, we ship electronics weekly. However, high-value devices must be explicitly declared upon arrival at our UK hub for specialized handling and security tracking. These items are subject to a standard electronics handling clearing fee." },
+    { question: "Do you offer doorstep delivery across Nigeria?", answer: "Yes, we offer final-mile doorstep delivery to homes and offices nationwide for an additional local delivery fee. Alternatively, you can choose free self-pickup from our main destination depots in Lagos and Port Harcourt." },
+    { question: "Is my shipment insured against loss or damage?", answer: "Every shipment is automatically covered up to a standard value of £50. For high-value commercial shipments, luxury goods, or electronics, we strongly advise purchasing our optional Extended Cargo Insurance, which covers up to 100% of the declared invoice value." }
   ];
 
   return (
@@ -287,7 +295,6 @@ function Home() {
       <section className="faq-section">
         <div className="faq-section__container">
           
-          {/* Left Column: Context & CTA */}
           <div className="faq-section__left">
             <div className="faq-section__badge">
               <MessageCircle size={16} />
@@ -317,7 +324,6 @@ function Home() {
             </div>
           </div>
 
-          {/* Right Column: Scrollable Accordions */}
           <div className="faq-section__right">
             <div className="accordion">
               {faqData.map((faq, index) => {
@@ -349,155 +355,251 @@ function Home() {
         </div>
       </section>
 
-      {/* --- STICKY TESTIMONIALS SECTION --- */}
-      <section className="testimonials">
-        <div className="testimonials__container">
+      {/* --- AESTHETIC REVIEWS SECTION (Inspired by Reference) --- */}
+      <section className="aesthetic-reviews">
+        <div className="ar-container">
           
-          {/* Left Content Column (Locks and Sticks on scroll) */}
-          <div className="testimonials__left">
-            <div className="testimonials__badge">
-              <Quote size={14} />
-              <span>Hear From Our Clients</span>
+          {/* Left Column: Content & CTA */}
+          <div className="ar-left">
+            <div className="ar-badge">
+              <span className="dot"></span> VERIFIED FEEDBACK
             </div>
             
-            <h2 className="testimonials__title">What our clients say</h2>
+            <h2 className="ar-title">
+              Delivering trust<br />with every shipment
+            </h2>
             
-            <p className="testimonials__intro">
-              We’ve built Jayconsty Cargo on a foundation of trust. Read how we’ve helped thousands of businesses move goods securely between the UK and Nigeria with zero stress.
+            <p className="ar-desc">
+              From seamless procurement to door-to-door logistics, read how we help businesses grow without border limits.
             </p>
             
-            {/* Ratings Block */}
-            <div className="testimonials__stats-block">
-              <div className="stat-group">
-                <p className="stat-group__number">4.9 / 5</p>
-                <div className="stat-group__stars">
-                  <Star size={16} fill="#f77f00" stroke="none" />
-                  <Star size={16} fill="#f77f00" stroke="none" />
-                  <Star size={16} fill="#f77f00" stroke="none" />
-                  <Star size={16} fill="#f77f00" stroke="none" />
-                  <Star size={16} fill="#f77f00" stroke="none" />
-                </div>
-                <p className="stat-group__label">Average Rating</p>
-              </div>
-
-              <div className="stat-group">
-                <p className="stat-group__number">10k+</p>
-                <p className="stat-group__label">Satisfied Users</p>
-              </div>
-
-              <div className="stat-group">
-                <p className="stat-group__number">8.5k+</p>
-                <p className="stat-group__label">Total Ratings</p>
-              </div>
+            <div className="ar-actions">
+              <button className="btn-dark-shadow" onClick={toggleModal}>
+                Add a review
+              </button>
+              <button className="btn-outline-light" onClick={toggleSeeAllModal}>
+                <MessageCircle size={16} /> Read all reviews
+              </button>
             </div>
 
-            {/* Action Row with Inline SVG Social Icons (Safe from Breaking Changes) */}
-            <div className="testimonials__actions-wrapper">
-              <button className="btn btn--neon testimonials__add-btn" onClick={toggleModal}>
-                Add a Review
-              </button>
+            <div className="ar-stats">
+              <div className="ar-stats-block">
+                <span className="ar-stats-label">TRUSTED SHIPPERS</span>
+                <div className="ar-avatar-group">
+                  <div className="ar-avatar-circle" style={{ backgroundColor: '#2563eb' }}>T</div>
+                  <div className="ar-avatar-circle" style={{ backgroundColor: '#0f172a' }}>F</div>
+                  <div className="ar-avatar-circle" style={{ backgroundColor: '#10b981' }}>S</div>
+                </div>
+              </div>
               
-              <div className="testimonials__socials">
-                {/* Instagram SVG */}
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram Reviews">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-                </a>
-                {/* X / Twitter SVG */}
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" aria-label="X Twitter Reviews">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-                {/* Facebook SVG */}
-                <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook Reviews">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-                </a>
+              <div className="ar-stats-divider"></div>
+              
+              <div className="ar-stats-block">
+                <span className="ar-stats-label">RATED EXCELLENT: 5/5</span>
+                <div className="ar-stars">
+                  <Star size={18} fill="#f59e0b" stroke="none" />
+                  <Star size={18} fill="#f59e0b" stroke="none" />
+                  <Star size={18} fill="#f59e0b" stroke="none" />
+                  <Star size={18} fill="#f59e0b" stroke="none" />
+                  <Star size={18} fill="#f59e0b" stroke="none" />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Right Content Column (Scrollable layout) */}
-          <div className="testimonials__right">
-            <div className="testimonials__grid">
-              {testimonialsData.map((testimonial) => (
-                <div className="t-card" key={testimonial.id}>
-                  <div className="t-card__header">
-                    <div className="t-card__profile-img">{testimonial.initial}</div>
-                    <div className="t-card__author-info">
-                      <p className="t-card__name">{testimonial.name}</p>
-                      <p className="t-card__handle">{testimonial.handle}</p>
+          {/* Right Column: Tilted Cards Stack */}
+          <div className="ar-right">
+            {isLoadingReviews ? (
+              <div className="ar-loading">
+                <div className="spinner-placeholder"></div>
+              </div>
+            ) : reviews.length === 0 ? (
+              /* Aesthetic Empty State */
+              <div className="ar-card tilt-variant-0">
+                <div className="ar-card-top">
+                  <span className="day">TODAY</span>
+                  <span className="date">NEW</span>
+                </div>
+                <div className="ar-card-bottom">
+                  <div className="ar-card-avatar" style={{ backgroundColor: '#f1f5f9', color: '#94a3b8' }}>
+                    <MessageCircle size={16} />
+                  </div>
+                  <div className="ar-card-info">
+                    <h4>Be the first to review</h4>
+                    <p>"Click the dark button to verify your tracking ID and share your experience."</p>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Dynamic Review Cards */
+              reviews.slice(0, 3).map((review, index) => (
+                <div className={`ar-card tilt-variant-${index % 3}`} key={review.id}>
+                  <div className="ar-card-top">
+                    <span className="day">REVIEW</span>
+                    <span className="date">{review.date ? review.date.toUpperCase() : 'RECENT'}</span>
+                  </div>
+                  <div className="ar-card-bottom">
+                    <div className="ar-card-avatar">
+                      {(review.name || "A").charAt(0).toUpperCase()}
+                    </div>
+                    <div className="ar-card-info">
+                      <h4>Verified client: {review.name}</h4>
+                      <p>"{review.comment}"</p>
+                    </div>
+                    <div className="ar-card-duration">
+                      {review.rating}/5
                     </div>
                   </div>
-                  <p className="t-card__message">"{testimonial.message}"</p>
                 </div>
-              ))}
-            </div>
-
-            {/* Trigger to open Master Reviews Modal Overlay */}
-            <button className="testimonials__see-more-link" onClick={toggleSeeAllModal}>
-              See more client reviews <ArrowRight size={16} />
-            </button>
+              ))
+            )}
           </div>
+
         </div>
+      </section>
 
-        {/* --- POPUP MODAL 1: LEAVE A REVIEW VERIFICATION --- */}
-        {isModalOpen && (
-          <div className="modal-overlay" onClick={toggleModal}>
-            <div className="modal-form" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-form__close" onClick={toggleModal}>
-                <X size={20} />
-              </button>
-              
-              <h3 className="modal-form__title">Submit a Review</h3>
-              <p className="modal-form__desc">
-                Please enter your 10-digit Jayconsty Cargo Order Number (e.g., JC12345678) to verify your recent shipment before leaving a review.
-              </p>
-              
-              <input 
-                type="text" 
-                placeholder="Enter your Order Number" 
-                value={orderNumber}
-                onChange={(e) => setOrderNumber(e.target.value)}
-                className="modal-form__input"
-              />
-              
-              <button className="btn btn--primary modal-form__submit">
-                Verify Shipment
-              </button>
-            </div>
-          </div>
-        )}
+      {/* --- POPUP MODAL 1: DYNAMIC REVIEW SUBMISSION FLOW --- */}
+      {isModalOpen && (
+        <div className="modal-overlay" onClick={toggleModal}>
+          <div className="modal-form" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-form__close" onClick={toggleModal}>
+              <X size={20} />
+            </button>
 
-        {/* --- POPUP MODAL 2: SEE ALL REVIEWS FEED (SCROLLABLE) --- */}
-        {isSeeAllOpen && (
-          <div className="modal-overlay" onClick={toggleSeeAllModal}>
-            <div className="master-reviews-window" onClick={(e) => e.stopPropagation()}>
-              <div className="master-reviews-window__header">
-                <div>
-                  <h3>All Client Testimonials</h3>
-                  <p>Real verified feedback from our international shipping channels</p>
-                </div>
-                <button className="master-reviews-window__close" onClick={toggleSeeAllModal}>
-                  <X size={22} />
+            {/* STEP 1: VERIFY SHIPMENT */}
+            {reviewStep === 1 && (
+              <form onSubmit={handleVerifyTracking}>
+                <h3 className="modal-form__title">Submit a Review</h3>
+                <p className="modal-form__desc">
+                  Please enter your Jayconsty Tracking ID (e.g., JYC-1234567) to verify your recent shipment before leaving a review.
+                </p>
+                
+                <input 
+                  type="text" 
+                  placeholder="Enter Tracking ID" 
+                  value={orderNumber}
+                  onChange={(e) => setOrderNumber(e.target.value)}
+                  className="modal-form__input"
+                  required
+                />
+                {verifyError && <p style={{color: '#ef4444', fontSize: '0.85rem', marginTop: '-1rem', marginBottom: '1.5rem'}}>{verifyError}</p>}
+                
+                <button type="submit" className="btn btn--primary modal-form__submit" disabled={isVerifying}>
+                  {isVerifying ? 'Verifying...' : 'Verify Shipment'}
+                </button>
+              </form>
+            )}
+
+            {/* STEP 2: WRITE REVIEW */}
+            {reviewStep === 2 && (
+              <form onSubmit={handleSubmitReview}>
+                <h3 className="modal-form__title">Rate Your Experience</h3>
+                <p className="modal-form__desc">Tell us how we did with your shipment ({orderNumber.toUpperCase()}).</p>
+                
+                <input 
+                  type="text" 
+                  value={revName} 
+                  onChange={(e) => setRevName(e.target.value)} 
+                  className="modal-form__input" 
+                  placeholder="Your Full Name" 
+                  required
+                />
+                <select 
+                  value={revRating} 
+                  onChange={(e) => setRevRating(e.target.value)} 
+                  className="modal-form__input" 
+                  required
+                >
+                  <option value="5">★★★★★ - Excellent</option>
+                  <option value="4">★★★★☆ - Very Good</option>
+                  <option value="3">★★★☆☆ - Average</option>
+                  <option value="2">★★☆☆☆ - Below Average</option>
+                  <option value="1">★☆☆☆☆ - Poor</option>
+                </select>
+                <textarea 
+                  value={revComment} 
+                  onChange={(e) => setRevComment(e.target.value)} 
+                  className="modal-form__textarea" 
+                  placeholder="Tell us about your experience..." 
+                  rows="4" 
+                  required 
+                />
+                
+                <button type="submit" className="btn btn--primary modal-form__submit" disabled={isSubmittingReview}>
+                  {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+                </button>
+              </form>
+            )}
+
+            {/* STEP 3: SUCCESS */}
+            {reviewStep === 3 && (
+              <div style={{textAlign: 'center', padding: '1rem 0'}}>
+                <CheckCircle size={54} color="#10b981" style={{margin: '0 auto 1rem'}}/>
+                <h3 className="modal-form__title">Thank You!</h3>
+                <p className="modal-form__desc">Your review has been successfully submitted and is pending administrator approval.</p>
+                <button className="btn btn--primary modal-form__submit" onClick={toggleModal}>
+                  Close Window
                 </button>
               </div>
+            )}
+          </div>
+        </div>
+      )}
 
-              <div className="master-reviews-window__stream">
-                {allReviewsData.map((review) => (
-                  <div className="t-card t-card--modal-view" key={review.id}>
-                    <div className="t-card__header">
-                      <div className="t-card__profile-img">{review.initial}</div>
+      {/* --- POPUP MODAL 2: SEE ALL REVIEWS FEED (SCROLLABLE) --- */}
+      {isSeeAllOpen && (
+        <div className="modal-overlay" onClick={toggleSeeAllModal}>
+          <div className="master-reviews-window" onClick={(e) => e.stopPropagation()}>
+            <div className="master-reviews-window__header">
+              <div>
+                <h3>All Client Testimonials</h3>
+                <p>Real verified feedback from our international shipping channels</p>
+              </div>
+              <button className="master-reviews-window__close" onClick={toggleSeeAllModal}>
+                <X size={22} />
+              </button>
+            </div>
+
+            <div className="master-reviews-window__stream">
+              {reviews.length === 0 ? (
+                <p style={{ color: '#64748b' }}>No verified reviews available to display.</p>
+              ) : (
+                reviews.map((review) => (
+                  <div className="t-card t-card--modal-view" key={review.id} style={{
+                    backgroundColor: '#ffffff',
+                    borderRadius: '16px',
+                    padding: '1.5rem',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                    border: '1px solid rgba(0, 0, 0, 0.02)'
+                  }}>
+                    <div className="t-card__header" style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+                      <div className="t-card__profile-img" style={{
+                        width: '40px', height: '40px', borderRadius: '50%', backgroundColor: '#1e293b', 
+                        color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '700'
+                      }}>
+                        {(review.name || "A").charAt(0).toUpperCase()}
+                      </div>
                       <div className="t-card__author-info">
-                        <p className="t-card__name">{review.name}</p>
-                        <p className="t-card__handle">{review.handle}</p>
+                        <p className="t-card__name" style={{ margin: '0 0 4px 0', fontWeight: '600', color: '#111827' }}>
+                          {review.name}
+                        </p>
+                        <div style={{display: 'flex', gap: '2px'}}>
+                           {[...Array(5)].map((_, i) => (
+                             <Star key={i} size={12} fill={i < review.rating ? "#f59e0b" : "#e2e8f0"} color={i < review.rating ? "#f59e0b" : "#e2e8f0"} />
+                           ))}
+                        </div>
                       </div>
                     </div>
-                    <p className="t-card__message">"{review.message}"</p>
+                    <p className="t-card__message" style={{ margin: '0', color: '#64748b', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                      "{review.comment}"
+                    </p>
                   </div>
-                ))}
-              </div>
+                ))
+              )}
             </div>
           </div>
-        )}
-      </section>
+        </div>
+      )}
 
     </main>
   );

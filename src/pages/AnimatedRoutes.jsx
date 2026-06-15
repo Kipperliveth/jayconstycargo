@@ -10,6 +10,8 @@ import Pricing from "./Pricing"
 import Services from "./Services"
 import Tracking from "./Tracking"
 import NotFound from "./NotFound"
+import AdminDashboard from "../Admin/AdminDashboard"
+import Login from "../Admin/Login"
 
 
 function AnimatedRoutes() {
@@ -35,6 +37,10 @@ function AnimatedRoutes() {
             <Route path="/pricing" element={<Pricing />}/>
             <Route path="/services" element={<Services />}/>
             <Route path="/tracking" element={<Tracking />}/>
+
+            {/* admin */}
+            <Route path="/admin/login" element={<Login />}/>
+            <Route path="/admin/dashboard" element={<AdminDashboard />}/>
 
         </Routes>
 

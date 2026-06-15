@@ -1,22 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MapPin, PhoneCall, Mail, Clock, ArrowRight, MessageSquare } from 'lucide-react';
 import { FaFacebook, FaXTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa6';
 import logo from "../assets/jayconsty-logo.png";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
+  const location = useLocation();
+
+  // --- NEW: HIDE FOOTER ON ADMIN ROUTES ---
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <footer className="footer">
       
-      {/* Call To Action / Newsletter Strip */}
       <div className="footer__cta-strip">
         <div className="footer__cta-content">
           <h3>Ready to ship with us?</h3>
           <p className='strip'>Get reliable logistics solutions tailored to your business needs.</p>
         </div>
         
-        {/* NEW: Action Buttons Container */}
         <div className="footer__cta-actions">
           <Link to="/contact" className="footer__btn footer__btn--outline">
             Get a Quote <MessageSquare size={18} />
@@ -29,7 +33,6 @@ function Footer() {
 
       <div className="footer__container">
         
-        {/* Column 1: Brand & Socials */}
         <div className="footer__brand">
           <Link to="/">
             <img src={logo} alt="Jayconsty Cargo" className="footer__logo" />
@@ -45,7 +48,6 @@ function Footer() {
           </div>
         </div>
 
-        {/* Column 2: Quick Links */}
         <div className="footer__links">
           <h4>Company</h4>
           <ul>
@@ -56,7 +58,6 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Column 3: Resources & Deep Links */}
         <div className="footer__links">
           <h4>Resources</h4>
           <ul>
@@ -68,13 +69,11 @@ function Footer() {
           </ul>
         </div>
 
-       {/* Column 4: Contact & Location */}
         <div className="footer__contact">
           <h4>Get In Touch</h4>
           <ul className="footer__contact-info">
             <li>
               <MapPin size={18} className="icon" />
-              {/* Opens in a new tab to Google Maps */}
               <a 
                 href="https://maps.google.com/?q=123+Logistics+Avenue,+Industrial+Estate,+Port+Harcourt,+Rivers+State,+Nigeria" 
                 target="_blank" 
@@ -85,17 +84,14 @@ function Footer() {
             </li>
             <li>
               <PhoneCall size={18} className="icon" />
-              {/* Triggers the phone's dialer */}
               <a href="tel:+2348001234567">+234 (0) 800 123 4567</a>
             </li>
             <li>
               <Mail size={18} className="icon" />
-              {/* Opens default email client (Gmail, Outlook, Apple Mail, etc.) */}
               <a href="mailto:support@jayconstycargo.com">support@jayconstycargo.com</a>
             </li>
             <li>
               <Clock size={18} className="icon" />
-              {/* Kept as a span since time isn't a clickable action */}
               <span>Mon - Fri: 8:00 AM - 6:00 PM</span>
             </li>
           </ul>
@@ -103,10 +99,9 @@ function Footer() {
 
       </div>
 
-      {/* Bottom Copyright Bar */}
       <div className="footer__bottom">
         <div className="footer__bottom-container">
-          <p>&copy; {currentYear} Jayconsty Cargo. All rights reserved.</p>
+          <p>© {currentYear} Jayconsty Cargo. All rights reserved.</p>
           <div className="footer__bottom-links">
             <Link to="/legal">Legal</Link>
             <span className="divider">|</span>

@@ -8,19 +8,26 @@
   padding-bottom: 6rem;
 }
 
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* =========================================
    PREMIUM GEOMETRIC HERO BACKGROUND
    ========================================= */
 .tracking-hero {
   background-color: #fcfdfe; 
   border-bottom: 1px solid #e5e7eb;
-  /* Deepened bottom padding to absorb the overlapping cards cleanly */
   padding: 8rem 1.5rem 9rem 1.5rem;
   text-align: center;
   position: relative;
   overflow: hidden;
 
-  /* Accent 1: Ambient spotlight glow layered behind the content box */
   &::before {
     content: '';
     position: absolute;
@@ -35,7 +42,6 @@
     z-index: 1;
   }
 
-  /* Accent 2: High-fidelity grid blueprint mapping overlay */
   &::after {
     content: '';
     position: absolute;
@@ -47,7 +53,7 @@
     background-position: center top;
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 60%, rgba(0, 0, 0, 0) 100%);
     pointer-events: none;
-    z-index: 2; /* Sits underneath content to allow seamless input interaction */
+    z-index: 2; 
   }
 }
 
@@ -55,7 +61,7 @@
   max-width: 650px;
   margin: 0 auto;
   position: relative;
-  z-index: 5; /* Pushes text above the active design grids safely */
+  z-index: 5; 
 
   h1 {
     font-size: clamp(2.5rem, 5vw, 3.25rem);
@@ -90,8 +96,6 @@
     .search-icon {
       position: absolute;
       left: 1.25rem;
-      width: 20px;
-      height: 20px;
       color: #6b7280;
     }
 
@@ -130,9 +134,10 @@
       background: none;
       border: none;
       color: #9ca3af;
-      font-size: 1rem;
       cursor: pointer;
       padding: 0.25rem;
+      display: flex;
+      align-items: center;
       
       &:hover {
         color: #111827;
@@ -177,12 +182,53 @@
   font-weight: 500;
 }
 
+/* --- Recent Searches Cache --- */
+.recent-searches {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  .recent-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    font-weight: 500;
+  }
+
+  .recent-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    .recent-pill {
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      color: #374151;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #e5e7eb;
+        color: #0052ff;
+        border-color: #bfdbfe;
+      }
+    }
+  }
+}
+
 /* =========================================
    RESULTS SECTION (Overlapping Layout Frame)
    ========================================= */
 .tracking-results-section {
   padding: 0 1.5rem;
-  /* Aggressively shifts container upwards to intersect the baseline of the grid design */
   margin-top: -6rem; 
   position: relative;
   z-index: 10; 
@@ -206,9 +252,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    border-bottom: 1px solid #f3f4f6;
-    padding-bottom: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem; // Increased to accommodate Stepper
 
     .tracking-label {
       font-size: 0.85rem;
@@ -220,12 +264,40 @@
       margin-bottom: 0.5rem;
     }
 
-    h2 {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #111827;
-      margin: 0;
-      letter-spacing: 0.05em;
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+
+      h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        letter-spacing: 0.05em;
+      }
+
+      /* Copy Link Action */
+      .copy-link-btn {
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #4b5563;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+          background: #e5e7eb;
+          color: #111827;
+        }
+      }
     }
 
     .status-badge {
@@ -236,6 +308,7 @@
       border-radius: 50px;
       font-size: 0.9rem;
       font-weight: 600;
+      border: 1px solid transparent;
 
       .dot {
         width: 8px;
@@ -243,20 +316,88 @@
         border-radius: 50%;
       }
 
-      &.in-transit {
-        background-color: #eff6ff;
-        color: #1d4ed8;
-        border: 1px solid #bfdbfe;
-        
-        .dot { background-color: #2563eb; }
+      /* Dynamic Badge Colors linked to Global Status */
+      &.processing { background: #f1f5f9; color: #475569; border-color: #cbd5e1; .dot { background: #64748b; } }
+      &.in-transit { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; .dot { background: #2563eb; } }
+      &.out-for-delivery { background: #fffbeb; color: #b45309; border-color: #fde68a; .dot { background: #d97706; } }
+      &.delivered { background: #ecfdf5; color: #047857; border-color: #a7f3d0; .dot { background: #10b981; } }
+    }
+  }
+
+  /* --- Visual Progress Stepper --- */
+  .progress-stepper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    position: relative;
+    border-bottom: 1px solid #f3f4f6;
+    
+    /* Background line */
+    &::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 10%;
+      right: 10%;
+      height: 4px;
+      background-color: #f3f4f6;
+      z-index: 1;
+      border-radius: 2px;
+    }
+
+    /* Dynamic Fill line */
+    .progress-line-fill {
+      position: absolute;
+      top: 14px;
+      left: 10%;
+      height: 4px;
+      background-color: #10b981;
+      z-index: 1;
+      border-radius: 2px;
+      transition: width 0.5s ease;
+      max-width: 80%; /* Match the right inset */
+    }
+
+    .step {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+
+      .step-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: #f3f4f6;
+        color: #9ca3af;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid #fff;
+        transition: all 0.3s;
       }
 
-      &.delivered {
-        background-color: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
+      .step-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        text-align: center;
+      }
 
-        .dot { background-color: #10b981; }
+      &.completed {
+        .step-icon { background-color: #10b981; color: #fff; }
+        .step-label { color: #111827; }
+      }
+      
+      &.active {
+        .step-icon { background-color: #0052ff; color: #fff; box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.15); }
+        .step-label { color: #0052ff; }
       }
     }
   }
@@ -274,7 +415,10 @@
       .detail-label {
         font-size: 0.85rem;
         color: #6b7280;
-        font-weight: 500;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
 
       .detail-value {
@@ -380,13 +524,8 @@
       }
 
       &.completed {
-        .timeline-marker {
-          background-color: #10b981;
-          border-color: #10b981;
-        }
-        &::before {
-          background-color: #10b981;
-        }
+        .timeline-marker { background-color: #10b981; border-color: #10b981; }
+        &::before { background-color: #10b981; }
       }
 
       &.current {
@@ -398,9 +537,7 @@
       }
 
       &.pending {
-        .timeline-content {
-          opacity: 0.5;
-        }
+        .timeline-content { opacity: 0.5; }
       }
     }
   }
@@ -417,8 +554,9 @@
     box-shadow: 0 4px 12px rgba(1, 27, 74, 0.01);
 
     .support-icon {
-      font-size: 2.5rem;
       margin-bottom: 1rem;
+      display: flex;
+      justify-content: center;
     }
 
     h3 {
@@ -436,7 +574,10 @@
     }
 
     .support-btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
       width: 100%;
       background-color: #f3f4f6;
       color: #111827;
@@ -467,6 +608,10 @@
         color: #0052ff;
         text-decoration: none;
         font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
 
         &:hover {
           text-decoration: underline;
@@ -511,5 +656,14 @@
 
   .status-overview-card, .timeline-container, .support-sidebar .support-card {
     padding: 1.5rem;
+  }
+
+  .progress-stepper {
+    &::before, .progress-line-fill {
+      left: 12%; right: 12%;
+    }
+    .step-label {
+      font-size: 0.65rem;
+    }
   }
 }

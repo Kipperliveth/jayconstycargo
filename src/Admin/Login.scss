@@ -1,0 +1,206 @@
+/* ==========================================================================
+   FLAT, CENTERED LOGIN PAGE (NO CARDS/ISLANDS)
+   ========================================================================== */
+.admin-login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* Clean white background */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding: 2rem;
+}
+
+.admin-login-content {
+  width: 100%;
+  max-width: 380px; /* Tight, readable line-length for forms */
+  
+  .login-header {
+    text-align: left;
+    margin-bottom: 2.5rem;
+
+    .brand-logo {
+      height: 100px;
+      object-fit: contain;
+      margin-bottom: 0;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #0f172a; /* Brand Slate */
+      margin: 0 0 0.4rem 0;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: #64748b;
+      margin: 0;
+    }
+  }
+
+  /* Status Banners */
+  .feedback-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    
+    &.error-banner {
+      background-color: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+    
+    &.success-banner {
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+  }
+
+  /* Flat Form Styling */
+  .flat-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    .input-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+      }
+
+      .input-relative {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+        .icon-left {
+          position: absolute;
+          left: 1rem;
+          color: #94a3b8;
+        }
+
+        input {
+          width: 100%;
+          padding: 0.9rem 2.5rem 0.9rem 2.75rem;
+          border-radius: 8px; /* Slight radius for input modernism, no outer card */
+          border: 1px solid #cbd5e1;
+          background-color: #ffffff;
+          font-size: 0.95rem;
+          color: #0f172a;
+          transition: all 0.2s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #2563eb; /* Brand Blue */
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+          }
+
+          &:disabled {
+            background-color: #f8fafc;
+            color: #94a3b8;
+            cursor: not-allowed;
+          }
+        }
+
+        .btn-toggle-password {
+          position: absolute;
+          right: 1rem;
+          background: transparent;
+          border: none;
+          color: #94a3b8;
+          cursor: pointer;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          &:hover:not(:disabled) { color: #0f172a; }
+          &:disabled { cursor: not-allowed; }
+        }
+      }
+    }
+
+    .form-utilities {
+      display: flex;
+      justify-content: flex-end; /* Push reset link to right */
+      margin-top: 0.25rem;
+
+      .btn-reset-link {
+        background: transparent;
+        border: none;
+        color: #2563eb; /* Brand Blue */
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        transition: color 0.2s;
+
+        &:hover:not(:disabled) { color: #1d4ed8; text-decoration: underline; }
+        &:disabled { opacity: 0.5; cursor: not-allowed; text-decoration: none; }
+      }
+    }
+
+    .btn-submit {
+      margin-top: 1rem;
+      background-color: #0f172a; /* Brand Slate */
+      color: #ffffff;
+      border: none;
+      padding: 0.95rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: #1e293b;
+      }
+
+      &:disabled {
+        background-color: #94a3b8;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+/* Animations */
+.spinner {
+  animation: spin 1s linear infinite;
+}
+.inline-spinner {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
